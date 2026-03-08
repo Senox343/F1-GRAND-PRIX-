@@ -2,224 +2,100 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>F1 GRAND PRIX – Full Race</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>F1 GRAND PRIX – Prywatne Nagranie CIA</title>
   <style>
     :root {
-      --bg: #000000;
-      --neon-white: #ffffff;
-      --neon-glow: rgba(255,255,255,0.7);
-      --neon-dim: rgba(255,255,255,0.15);
+      --bg: #000;
+      --neon: #ffffff;
+      --glow: rgba(255,255,255,0.7);
+      --dim: rgba(255,255,255,0.2);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       background: var(--bg);
-      color: var(--neon-white);
-      font-family: 'Arial Black', 'Impact', sans-serif;
+      color: var(--neon);
+      font-family: Impact, 'Arial Black', sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 20%, #222 0%, #000 70%);
       overflow-x: hidden;
-      background: radial-gradient(circle at 30% 20%, #222 0%, #000 60%);
     }
-
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(15px);
-      z-index: 9999;
-      padding: 18px 0;
-      border-bottom: 1px solid var(--neon-dim);
-    }
-    nav ul {
-      display: flex;
-      justify-content: center;
-      gap: 60px;
-      list-style: none;
-    }
-    nav a {
-      color: var(--neon-white);
-      text-decoration: none;
-      font-size: 1.5rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      text-shadow: 0 0 15px var(--neon-glow);
-      transition: all 0.5s;
-    }
-    nav a:hover {
-      text-shadow: 0 0 30px var(--neon-white), 0 0 60px var(--neon-glow);
-      transform: translateY(-3px);
-    }
-
-    /* Hero – mega neon */
     #hero {
-      height: 100vh;
+      height: 40vh;
+      min-height: 200px;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       text-align: center;
-      position: relative;
+      padding: 20px;
     }
-    #hero h1 {
-      font-size: 9vw;
+    h1 {
+      font-size: clamp(3rem, 12vw, 7rem);
+      letter-spacing: 0.4em;
       text-transform: uppercase;
-      letter-spacing: 20px;
       text-shadow: 
-        0 0 30px var(--neon-white),
-        0 0 60px var(--neon-white),
-        0 0 120px var(--neon-glow),
-        0 0 200px var(--neon-dim);
-      animation: glitchNeon 6s infinite alternate, pulseGlow 3s infinite;
+        0 0 10px var(--neon),
+        0 0 20px var(--neon),
+        0 0 40px #00ffff44,
+        0 0 80px #00ffff22;
+      animation: glitch 5s infinite alternate;
     }
-    #hero p {
-      font-size: 2.5rem;
-      margin: 30px 0 80px;
-      opacity: 0.85;
-      letter-spacing: 3px;
-      animation: fadeInText 4s ease-out 1.5s forwards;
-    }
-
-    @keyframes glitchNeon {
+    @keyframes glitch {
       0%, 100% { transform: translate(0); }
-      20% { transform: translate(-5px, 5px); }
-      40% { transform: translate(5px, -5px); }
-      60% { transform: translate(-3px, 3px); }
+      15% { transform: translate(-3px, 3px); }
+      30% { transform: translate(3px, -3px); }
+      50% { transform: translate(-2px, 2px); }
     }
-    @keyframes pulseGlow {
-      0%, 100% { text-shadow: 0 0 30px var(--neon-white), 0 0 60px var(--neon-white); }
-      50%  { text-shadow: 0 0 50px var(--neon-white), 0 0 100px var(--neon-glow); }
-    }
-    @keyframes fadeInText { to { opacity: 0.85; } }
-
-    /* Player – ultra efekt */
-    #player-section {
-      padding: 120px 20px 200px;
-      text-align: center;
+    .player-box {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      max-width: 1000px;
+      margin: 0 auto 30px;
+      padding: 0 12px;
     }
     .player-wrapper {
       position: relative;
-      width: 92%;
-      max-width: 1600px;
-      aspect-ratio: 16 / 9;
-      margin: 0 auto;
-      border: 4px solid var(--neon-white);
-      border-radius: 24px;
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%; /* 16:9 */
+      border: 2px solid var(--neon);
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 
-        0 0 100px var(--neon-glow),
-        inset 0 0 60px var(--neon-dim);
-      background: #000;
+      box-shadow: 0 0 50px var(--glow), inset 0 0 30px var(--dim);
     }
-    video {
+    iframe {
+      position: absolute;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
-      display: none;
-      object-fit: contain;
+      border: none;
     }
-    .mega-play {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 220px; height: 220px;
-      background: var(--neon-dim);
-      border: 6px solid var(--neon-white);
-      border-radius: 50%;
-      color: var(--neon-white);
-      font-size: 7rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-      box-shadow: 0 0 80px var(--neon-glow), 0 0 160px var(--neon-dim);
-      animation: chargePulse 2.5s infinite;
-    }
-    .mega-play:hover {
-      transform: translate(-50%, -50%) scale(1.25);
-      box-shadow: 0 0 160px var(--neon-white), 0 0 300px var(--neon-glow);
-      background: rgba(255,255,255,0.2);
-    }
-    .ring-orbit {
-      position: absolute;
-      inset: -40px;
-      border: 2px dashed var(--neon-white);
-      border-radius: 50%;
-      opacity: 0.3;
-      animation: orbit 20s linear infinite;
-    }
-    @keyframes chargePulse {
-      0%, 100% { box-shadow: 0 0 80px var(--neon-glow); }
-      50%  { box-shadow: 0 0 140px var(--neon-white); }
-    }
-    @keyframes orbit {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
     footer {
-      position: fixed;
-      bottom: 30px;
-      left: 0; right: 0;
       text-align: center;
-      color: #777;
-      font-size: 1.3rem;
-      text-shadow: 0 0 15px #333;
-      pointer-events: none;
-    }
-
-    @media (max-width: 768px) {
-      #hero h1 { font-size: 12vw; letter-spacing: 10px; }
-      .mega-play { width: 160px; height: 160px; font-size: 5rem; }
+      padding: 20px;
+      font-size: 1rem;
+      color: #444;
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
     }
   </style>
 </head>
 <body>
-
-  <nav>
-    <ul>
-      <li><a href="#">F1 GRAND PRIX 2026</a></li>
-      <li><a href="#player-section">FULL RACE</a></li>
-    </ul>
-  </nav>
-
   <section id="hero">
     <h1>F1 GRAND PRIX</h1>
-    <p>Twój prywatny, pełny wyścig – 1:14:28 czystej adrenaliny</p>
   </section>
 
-  <section id="player-section">
+  <div class="player-box">
     <div class="player-wrapper">
-      <div class="ring-orbit"></div>
-      <video id="f1Video" controls preload="auto" poster="https://archive.org/services/img/f1-prix">
-        <source src="https://archive.org/download/f1-prix/2026-03-08%2005-18-29.mp4" type="video/mp4">
-        Przeglądarka nie wspiera video – pobierz plik bezpośrednio.
-      </video>
-      <button class="mega-play" id="megaPlay"><i class="fas fa-play"></i></button>
+      <iframe 
+        src="https://drive.google.com/file/d/1Y4TnQjd3f0Z0OXa6EjpHoYXwn5ta0B0i/preview?autoplay=1" 
+        allow="autoplay; encrypted-media; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
     </div>
-  </section>
+  </div>
 
-  <footer>no siemano • strona stworzona specjalnie by oglądać F1 Grand Prix !</footer>
-
-  <script>
-    const megaPlay = document.getElementById('megaPlay');
-    const video = document.getElementById('f1Video');
-    const wrapper = document.querySelector('.player-wrapper');
-
-    megaPlay.addEventListener('click', () => {
-      megaPlay.style.display = 'none';
-      video.style.display = 'block';
-      video.play().catch(e => {
-        console.warn("Autoplay blokowany:", e);
-        video.muted = true;
-        video.play();
-      });
-      wrapper.classList.add('loaded');
-    });
-
-    video.addEventListener('click', () => {
-      video.paused ? video.play() : video.pause();
-    });
-  </script>
-
+  <footer>Prywatne nagranie • CIA • 2026</footer>
 </body>
 </html>
